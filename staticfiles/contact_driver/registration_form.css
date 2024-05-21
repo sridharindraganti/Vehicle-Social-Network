@@ -1,0 +1,77 @@
+.registrationForm {
+    width: 50%;
+    min-height: 500px;
+    padding: 10px 50px;
+    border: 2px solid #000000;
+    margin: 0 auto;
+    background-color: white;
+}
+ 
+.registrationForm h2 {
+    font-size: 30px;
+    font-weight: 500;
+    color: #333;
+    padding: 20px 0;
+}
+  
+.registrationForm .inputBox {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+}
+  
+.registrationForm .inputBox input[type="text"],
+.registrationForm .inputBox input[type="email"],
+.registrationForm .inputBox input[type="tel"] {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    margin: 10px 0;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #333;
+    resize: none;
+}
+  
+.registrationForm .inputBox span {
+    position: absolute;
+    left: 0;
+    padding: 5px 0;
+    font-size: 16px;
+    margin: 10px 0;
+    pointer-events: none;
+    transition: 0.5s;
+    color: #666;
+}
+  
+.registrationForm .inputBox input:focus~span,
+.registrationForm .inputBox input:valid~span {
+    color: #e91e63;
+    font-size: 12px;
+    transform: translateY(-20px);
+}
+  
+.registrationForm .radioButtons {
+    margin-top: 20px;
+}
+  
+.registrationForm .radioButtons span {
+    font-size: 16px;
+}
+  
+.registrationForm .radioButtons input[type="radio"] {
+    margin-right: 10px;
+}
+ 
+.registrationForm .inputBox input[type="submit"] {
+    width: 100%;
+    background: #383838;
+    color: aliceblue;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+}
+  
+.registrationForm .inputBox input[type="submit"]:hover {
+    background: #00bcd4;
+}

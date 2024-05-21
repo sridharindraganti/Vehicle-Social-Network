@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        strong {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            cursor: pointer;
+            width: 100%; /* Changed width to 100% */
+            max-width: 150px; /* Added max-width */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+nav {
+  background-color: #4a4a4a;
+  height: 80px;
+  width: 100%;
+  position: absolute; /* Change position to absolute */
+  top: 0; /* Align to the top */
+  left: 0;
+}
+
+nav ul {
+  float: right;
+  margin-right: 100px;
+}
+
+nav ul li {
+  display: inline-block;
+  line-height: 80px;
+  margin: 0 5px;
+}
+
+nav ul li a {
+  color: #ffffff;
+  font-size: 17px;
+  padding: 7px 13px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+a:hover {
+  background: #1b9bff;
+  transition: .5s;
+}
+
+.checkbtn {
+  font-size: 30px;
+  color: white;
+  float: right;
+  line-height: 80px;
+  margin-right: 40px;
+  cursor: pointer;
+  display: none;
+}
+
+#check {
+  display: none;
+}
+
+label.logo {
+  color: white;
+  font-size: 35px;
+  line-height: 80px;
+  padding: 0 20px; /* Adjust the padding */
+  font-weight: bold;
+  float: left; /* Align the logo to the left */
+}
+
+.container .details{
+  font-size: 20px;
+}
+
+.container button{
+  width: 50%;
+  height: 50%;
+}
+@media (max-width: 952px) {
+  label.logo {
+    font-size: 30px;
+    padding-left: 50px;
+  }
+  nav ul li a {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 858px) {
+  .checkbtn {
+    display: block;
+  }
+  ul {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #2c3e50;
+    top: 80px;
+    left: -100%; 
+    text-align: center;
+    transition: all .5s;
+  }
+  nav ul li {
+    display: block;
+    margin: 50px 0;
+    line-height: 30px;
+  }
+  nav ul li a {
+    font-size: 20px;
+  }
+  a:hover, a.active {
+    background: none;
+    color: #0082e6;
+  }
+  #check:checked ~ ul {
+    left: 0; 
+  }
+}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+          <i class="fas fa-bars"></i>
+        </label>
+        <label class="logo">Social Platform</label>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'about_us' %}">About</a></li>
+          <li><a href="{% url 'products' %}">Products</a></li>
+          <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+          <li><a href="#" onclick="signOut()">Sign Out <i class="fas fa-sign-out-alt"></i></a></li>
+      </ul>
+      </nav>
+
+    <div class="container">
+        <h1>Search Results</h1>
+        <ul>
+            {% for result in results %}
+            <li>
+                {% if result.visibility %}
+                <!-- Display name and roll number if visibility is True -->
+                <div class="details">
+                    <strong>Name:</strong> {{ result.username }}<br>
+                    <strong>Roll Number:</strong> {{ result.roll_number }}<br>
+                </div>
+                {% endif %}
+                <!-- Display license plate number -->
+                <div class="details">
+                    <strong>License Plate Number:</strong> {{ result.license_plate_number }}<br>
+                </div>
+                <!-- Display contact method as buttons -->
+                {% if result.contact_method == 'call' %}
+                <button>Call</button>
+                {% elif result.contact_method == 'email' %}
+                <button class="send-email" data-email="{{ result.email }}">Email</button>
+                {% elif result.contact_method == 'sms' %}
+                <button>SMS</button>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Add radio buttons and send email button -->
+<div id="emailModal" class="hidden">
+  <form id="emailForm">
+      <input type="radio" id="message1" name="message" value="Hi, your vehicle appears to have broken down and is blocking the road. Please attend to it as soon as possible. Thanks!">
+      <label for="message1">Broken Down</label><br>
+      <input type="radio" id="message2" name="message" value="Hello, I noticed your vehicle is obstructing the path, possibly due to a breakdown. Could you check and move it, please? Appreciate it!">
+      <label for="message2">Obstructing Path</label><br>
+      <input type="radio" id="message3" name="message" value="Excuse me, your vehicle seems to be creating noise pollution, and it's blocking my way. Could you address the issue? Thanks for understanding!">
+      <label for="message3">Noise Pollution</label><br>
+      <input type="radio" id="message4" name="message" value="Hey, there seems to be a mechanical issue with your vehicle causing it to block the road. Can you please take care of it? Thanks for your cooperation!">
+      <label for="message4">Mechanical Issue</label><br>
+      <button type="button" id="sendEmailButton">Send Email</button>
+  </form>
+</div>
+
+    <script>
+        // Function to handle sign out
+        function signOut() {
+            // Redirect to the signout URL
+            window.location.href = '/signout';
+        }
+
+         // Function to show email modal and set email address
+    $('.send-email').click(function() {
+        var email = $(this).data('email');
+        $('#emailModal').removeClass('hidden');
+        $('#emailModal').data('email', email);
+    });
+
+    // Function to send email
+    $('#sendEmailButton').click(function() {
+        var message = $('input[name="message"]:checked').val();
+        var email = $('#emailModal').data('email');
+        
+        // AJAX request to send email
+        $.ajax({
+            url: '/send_email/',
+            method: 'POST',
+            data: {
+                email: email,
+                message: message
+            },
+            success: function(response) {
+                alert(response.message);
+                $('#emailModal').addClass('hidden');
+            },
+            error: function() {
+                alert('Failed to send email. Please try again later.');
+            }
+        });
+    });
+      </script>
+      
+</body>
+</html>

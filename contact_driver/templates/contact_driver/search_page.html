@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Plate Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Add Font Awesome CSS -->
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #000000;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: #007bff;
+            font-size: 50px;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #search-form {
+            display: flex;
+            align-items: center;
+        }
+
+        #search-bar {
+            padding: 10px;
+            margin-right: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 250px;
+        }
+
+        #search-bar:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        #search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .camera-button {
+            padding: 10px;
+            color: #007bff;
+            background-color: #000000;
+            border: none;
+            border-radius: 50%;
+            font-size: 45px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search For Vehicle Owner</h1>
+    
+    <div class="container">
+        <button class="camera-button" onclick="openCamera()">
+            <i class="fas fa-camera"></i>
+        </button>
+
+        <form id="search-form" method="post" action="{% url 'search_results' %}">
+            {% csrf_token %}
+            <input type="text" id="search-bar" name="license_plate_number" placeholder="Eg:-AP31DJ6661..">
+            <button id="search-button" type="submit" onclick="search()">Search</button>
+        </form>
+    </div>
+
+    <script>
+        function openCamera() {
+            fetch('{% url "open_camera" %}')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.detected_text) {
+                        var cleanedText = data.detected_text.replace(/\s/g, '');
+                        document.getElementById("search-bar").value = cleanedText;
+                    } else {
+                        console.error('No detected text found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function search() {
+            var licensePlateNumber = document.getElementById("search-bar").value;
+            fetch('{% url "search_results" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ license_plate_number: licensePlateNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

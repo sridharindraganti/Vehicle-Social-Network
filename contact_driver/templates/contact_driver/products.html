@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+<style>
+  /* CSS for section layout and background */
+  .registration,
+  .search {
+    text-align: center;
+    padding: 50px 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .registration {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  .search {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .registration .container,
+  .search .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .registration .container h2{
+    margin-bottom: 20px;
+    font-size: 50px;
+  }
+
+  .registration .container p{
+    text-align: justify;
+    line-height: 1.5;
+    font-size: 20px;
+  }
+
+  .search .container h2{
+    margin-bottom: 20px;
+    font-size: 50px;
+  }
+
+  .search .container p{
+    text-align: justify;
+    line-height: 1.5;
+    font-size: 20px;
+  }
+
+  .register-btn,
+  .search-btn {
+    display: inline-block;
+    background-color: #0082e6;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+
+  .register-btn:hover,
+  .search-btn:hover {
+    background-color: #00638a;
+  }
+
+  /* CSS for navigation bar */
+  nav {
+  background-color: #4a4a4a;
+  height: 80px;
+  width: 100%;
+  position: absolute; /* Change position to absolute */
+  top: 0; /* Align to the top */
+  left: 0;
+}
+
+nav ul {
+  float: right;
+  margin-right: 100px;
+}
+
+nav ul li {
+  display: inline-block;
+  line-height: 80px;
+  margin: 0 5px;
+}
+
+nav ul li a {
+  color: #ffffff;
+  font-size: 17px;
+  padding: 7px 13px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+a:hover {
+  background: #1b9bff;
+  transition: .5s;
+}
+
+.checkbtn {
+  font-size: 30px;
+  color: white;
+  float: right;
+  line-height: 80px;
+  margin-right: 40px;
+  cursor: pointer;
+  display: none;
+}
+
+#check {
+  display: none;
+}
+
+label.logo {
+  color: white;
+  font-size: 35px;
+  line-height: 80px;
+  padding: 0 20px; /* Adjust the padding */
+  font-weight: bold;
+  float: left; /* Align the logo to the left */
+}
+
+@media (max-width: 952px) {
+  label.logo {
+    font-size: 30px;
+    padding-left: 50px;
+  }
+  nav ul li a {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 858px) {
+  .checkbtn {
+    display: block;
+  }
+  ul {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #2c3e50;
+    top: 80px;
+    left: -100%; 
+    text-align: center;
+    transition: all .5s;
+  }
+  nav ul li {
+    display: block;
+    margin: 50px 0;
+    line-height: 30px;
+  }
+  nav ul li a {
+    font-size: 20px;
+  }
+  a:hover, a.active {
+    background: none;
+    color: #0082e6;
+  }
+  #check:checked ~ ul {
+    left: 0; 
+  }
+}
+</style>
+</head>
+<body>
+
+  <nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="logo">Social Platform</label>
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'about_us' %}">About</a></li>
+      <li><a href="{% url 'products' %}">Products</a></li>
+      <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+      <li><a href="#" onclick="signOut()">Sign Out <i class="fas fa-sign-out-alt"></i></a></li>
+  </ul>
+  </nav>
+
+<section class="registration">
+  <div class="container">
+    <h2>Registration Process</h2>
+    <p>The registration form is designed to gather user information efficiently while offering control over visibility settings. 
+      It includes fields for the individual's name, roll number, and a checkbox option allowing users to choose whether to make their 
+      name and roll number visible. Additionally, the form requests details such as license plate number, email address, phone number, 
+      and preferred contact method. This comprehensive approach ensures that essential data is collected while respecting user preferences
+      regarding privacy. By offering users the ability to selectively share their personal information, the form enhances transparency and 
+      empowers individuals to manage their data responsibly. Such considerations are vital in today's digital landscape, where privacy 
+      concerns are paramount. This registration form represents a thoughtful balance between collecting necessary information for storing 
+      in the database. It is easy to collect the user information from user and storing in the database instead of collecting the details from 
+      the RTO officials. The information is also stored safely and the collected information is useful for retrieving it when the user needs.
+    </p>
+    <a href="{% url 'registration_form' %}" class="register-btn">Register Now</a>
+  </div>
+</section>
+
+<section class="search">
+  <div class="container">
+    <h2>Search Page</h2>
+    <p>The search page functions as a critical component in retrieving user data stored in the database, 
+      leveraging the license plate number as a unique identifier. Through this mechanism, users can swiftly access
+      their information on the website. By enabling searches based on the license plate number, the system streamlines 
+      the retrieval process, ensuring efficiency and accuracy in locating user details. This approach enhances user experience 
+      by providing a convenient and intuitive means of accessing personal information, fostering satisfaction and engagement with the website.
+      Moreover, the utilization of the license plate number as a search parameter underscores the system's commitment to data security and privacy. 
+      By relying on a specific identifier unique to each user, the search functionality minimizes the risk of unauthorized access to sensitive information. 
+      This reinforces trust and confidence in the website's data management practices, bolstering its reputation as a reliable platform for accessing personal data securely. 
+      Thus, the search page not only facilitates efficient data retrieval but also upholds stringent standards of data protection, aligning with contemporary expectations for online privacy and security.
+    </p>
+    <a href="{% url 'search_results' %}" class="search-btn">Search Now</a>
+  </div>
+</section>
+
+<script>
+  // Function to handle sign out
+  function signOut() {
+      // Redirect to the signout URL
+      window.location.href = '/signout';
+  }
+</script>
+
+</body>
+</html>

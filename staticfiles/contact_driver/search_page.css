@@ -1,0 +1,21 @@
+/* Adjustments for the search page */
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#search-bar {
+    width: 70%; /* Adjust as needed */
+     /* Add space between search bar and camera icon */
+}
+
+#open-camera-btn {
+    border: none;
+    background: none;
+    margin-left: auto; /* Align to the right */
+}
+
+#open-camera-btn img {
+    width: 2px; /* Adjust icon size */
+    height: 2px; /* Adjust icon size */
+}
